@@ -6,16 +6,35 @@ draw<-function(){
 	p1<-c(0.1475410,0.1743666)
 	p2<-c(0.9090909,0.8569300)
 	color<<-'black'
-	pen<<-1
-	cex<<-5
-	record<<-matrix(0,1e+3,1e+3)
-	flag<<-matrix(0,1e+3,1e+3)
+	pen<-1
+	cex<-5
+	record<-matrix(0,1e+3,1e+3)
+	flag<-matrix(0,1e+3,1e+3)
+	prex<-0
+	prey<-0
+	lin<<-F
 	add<-function(a,px,py){
+		if(pen!=4){lin<<-F}
 		point<-function(x,y){
 			temp<-matrix(c(runif(30)),ncol=3)
 			temp[,1]<-sin(temp[,1]*2*pi)*0.02*temp[,2]+px-0.01
 			temp[,2]<-sin(temp[,3]*2*pi)*0.02*temp[,2]+py-0.01
 			points(temp,pch=16,cex=0.8*cex/10,col=color)
+		}
+		line<-function(x,y){
+			print(c(x,y))
+			if(lin==F){
+				prex<<-x
+				prey<<-y
+				lin<<-T
+			}
+			else{
+				print("here")
+				lines(c(x,prex),c(y,prey),type='l',lwd=5*cex/10,col=color)
+				prex<<-x
+				prey<<-y
+				lin<<-F
+			}
 		}
 		px<-round((px-p1[1])/(p2[1]-p1[1]),3)
 		py<-round((py-p1[2])/(p2[2]-p1[2]),3)
@@ -23,7 +42,8 @@ draw<-function(){
 			record[px*(1e+3),py*(1e+3)]<-ifelse(color=='e',0,1)
 			if(pen==1)points(px,py,pch=16,col=color,cex=cex/10)
 			if(pen==2)point(px,py)
-			##if(pen==3)paint(px,py)
+			if(pen==3)paint(px,py)
+			if(pen==4)line(px,py)
 			flag<<-matrix(0,1e+3,1e+3)
 		}
 		return(NULL)
@@ -59,8 +79,9 @@ draw<-function(){
 		if(K=='q'){pen<<-1}
 		if(K=='w'){pen<<-2}
 		if(K=='a'){pen<<-3}
+		if(K=='l'){pen<<-4}
 		if(K%in%as.character(1:9)){cex<<-as.numeric(K)}
 		points(0,0,col='white')
 	}
-	getGraphicsEvent(prompt="create.reg",onMouseMove=add,onKeybd=col)
+	getGraphicsEvent(prompt="create.reg",onMouseMove=add,onMouseDown=add,onKeybd=col)
 }
