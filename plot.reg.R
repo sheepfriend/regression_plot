@@ -18,14 +18,16 @@ create.reg<-function(){
 				points(px,py)
 				if(new==F){data<-data[-1,];new=T}
 				if(nrow(data)>1){
-					reg<-lm(y~x,data=data)
+					reg<<-lm(y~x,data=data)
 					print(summary(reg))
 					abline(reg)
 				}
 			}
 		}
+		return(NULL)
 	}
 	getGraphicsEvent(prompt="create.reg",onMouseDown=add)
+	return(reg)
 }
 plot.reg<-function(data){
 	x11()
@@ -64,4 +66,5 @@ plot.reg<-function(data){
 		}	
 	}
 	getGraphicsEvent(prompt="plot.reg",onMouseDown=find)
+	return(reg)
 }
