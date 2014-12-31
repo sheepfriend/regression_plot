@@ -11,8 +11,11 @@ create.reg<-function(){
 		if(temp==0){p1<<-c(px,py);temp<<-temp+1;points(0,0,col='white')}
 		else if(temp==1){p2<<-c(px,py);temp<<-temp+1;points(1,1,col='white')}
 		else{
-			px<-(px-p1[1])/(p2[1]-p1[1])
-			py<-(py-p1[2])/(p2[2]-p1[2])
+			if(temp==2){
+				px<-(px-p1[1])/(p2[1]-p1[1])
+				py<-(py-p1[2])/(p2[2]-p1[2])
+				temp<-2
+			}
 			if(px<1 & px>0 & py<1 & py>0){
 				data<<-rbind(data,c(px,py))
 				points(px,py)
@@ -46,8 +49,11 @@ plot.reg<-function(data){
 		if(temp==0){p1<<-c(px,py);temp<<-temp+1;points(0,0,col='white')}
 		else if(temp==1){p2<<-c(px,py);temp<<-temp+1;points(1,1,col='white')}
 		else if(temp==2){
-			px<-(px-p1[1])/(p2[1]-p1[1])
-			py<-(py-p1[2])/(p2[2]-p1[2])
+			if(temp==2){
+				px<-(px-p1[1])/(p2[1]-p1[1])
+				py<-(py-p1[2])/(p2[2]-p1[2])
+				temp<-2
+			}
 			result<-which(abs(px-data[,1])<=0.01 & abs(py-data[,2])<=0.01)
 			if(length(result)==1){
 				points(data[result,1],data[result,2],col='white')
