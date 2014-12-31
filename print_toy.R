@@ -8,13 +8,14 @@ draw<-function(){
 	color<<-'black'
 	pen<-1
 	cex<-5
-	record<-matrix(0,1e+3,1e+3)
-	flag<-matrix(0,1e+3,1e+3)
 	prex<-0
 	prey<-0
-	lin<<-F
+	lin<-F
+	cir<-F
+	rec<-F
 	add<-function(a,px,py){
 		if(pen!=4){lin<<-F}
+		if(pen!=5){cir<<-F}
 		point<-function(x,y){
 			temp<-matrix(c(runif(30)),ncol=3)
 			temp[,1]<-sin(temp[,1]*2*pi)*0.02*temp[,2]+px-0.01
@@ -22,48 +23,82 @@ draw<-function(){
 			points(temp,pch=16,cex=0.8*cex/10,col=color)
 		}
 		line<-function(x,y){
-			print(c(x,y))
 			if(lin==F){
 				prex<<-x
 				prey<<-y
 				lin<<-T
 			}
 			else{
-				print("here")
 				lines(c(x,prex),c(y,prey),type='l',lwd=5*cex/10,col=color)
 				prex<<-x
 				prey<<-y
 				lin<<-F
 			}
 		}
+		circle<-function(x,y){
+			if(cir==F){
+				prex<<-x
+				prey<<-y
+				cir<<-T
+			}
+			else{
+				temp<-(1:1000)/1000
+				ra<-sqrt((x-prex)^2+(y-prey)^2)
+				print(ra)
+				points(prex+cos(temp*2*pi)*ra,prey+sin(temp*2*pi)*ra,cex=0.8*cex/10,col=color)
+				prex<<-x
+				prey<<-y
+				cir<<-F
+			}			
+		}
+		rect<-function(x,y){
+			if(rec==F){
+				prex<<-x
+				prey<<-y
+				rec<<-T
+			}
+			else{
+				lines(c(x,prex),c(prey,prey),type='l',lwd=5*cex/10,col=color)
+				lines(c(x,x),c(y,prey),type='l',lwd=5*cex/10,col=color)
+				lines(c(prex,prex),c(y,prey),type='l',lwd=5*cex/10,col=color)
+				lines(c(x,prex),c(y,y),type='l',lwd=5*cex/10,col=color)
+				prex<<-x
+				prey<<-y
+				rec<<-F
+			}
+		}
 		px<-round((px-p1[1])/(p2[1]-p1[1]),3)
 		py<-round((py-p1[2])/(p2[2]-p1[2]),3)
 		if(px<1 & px>0 & py<1 & py>0){
-			record[px*(1e+3),py*(1e+3)]<-ifelse(color=='e',0,1)
 			if(pen==1)points(px,py,pch=16,col=color,cex=cex/10)
 			if(pen==2)point(px,py)
-			if(pen==3)paint(px,py)
+			if(pen==3)painting(a,px,py)
 			if(pen==4)line(px,py)
-			flag<<-matrix(0,1e+3,1e+3)
+			if(pen==5)circle(px,py)
+			if(pen==6)rect(px,py)
 		}
 		return(NULL)
 	}
 	painting<-function(a,px,py){
 		paint<-function(x,y){
-			if(!(x<=1e-3 | y<=1e-3 | x>1 | y>1) & record[x*(1e+3),y*(1e+3)]==record[px*(1e+3),py*(1e+3)] & flag[x*(1e+3),y*(1e+3)]==0){
-				##points(x,y,pch=15,cex=0.1,col=color)
-				flag[x*(1e+3),y*(1e+3)]<<-1
-				if(round(x,1)>(1e-3) & round(y,1)>(1e-3) & round(x,1)<=1-(1e-3) & round(y,1)<=1-(1e-3))if(flag[x*(1e+3),y*(1e+3)+1]==0)paint(x,y+(1e-3))
-				if(round(x,1)>(1e-3) & round(y,1)>(1e-3) & round(x,1)<=1-(1e-3) & round(y,1)<=1-(1e-3))if(flag[x*(1e+3)+1,y*(1e+3)]==0)paint(x+(1e-3),y)
-				if(round(x,1)>(1e-3) & round(y,1)>(1e-3) & round(x,1)<=1-(1e-3) & round(y,1)<=1-(1e-3))if(flag[x*(1e+3),y*(1e+3)-1]==0)paint(x,y-(1e-3))
-				if(round(x,1)>(1e-3) & round(y,1)>(1e-3) & round(x,1)<=1-(1e-3) & round(y,1)<=1-(1e-3))if(flag[x*(1e+3)-1,y*(1e+3)]==0)paint(x-(1e-3),y)
+			if(!(x<=1e-3 | y<=1e-3 | x>1 | y>1)){
+				if(record[x*(1e+3),y*(1e+3)]==record[px*(1e+3),py*(1e+3)] & flag[x*(1e+3),y*(1e+3)]==0){
+					##points(x,y,pch=15,cex=0.1,col=color)
+					flag[x*(1e+3),y*(1e+3)]<<-1
+					if(round(x,1)>(1e-3) & round(y,1)>(1e-3) & round(x,1)<=1-(1e-3) & round(y,1)<=1-(1e-3))if(flag[x*(1e+3),y*(1e+3)+1]==0)paint(x,y+(1e-3))
+					if(round(x,1)>(1e-3) & round(y,1)>(1e-3) & round(x,1)<=1-(1e-3) & round(y,1)<=1-(1e-3))if(flag[x*(1e+3)+1,y*(1e+3)]==0)paint(x+(1e-3),y)
+					if(round(x,1)>(1e-3) & round(y,1)>(1e-3) & round(x,1)<=1-(1e-3) & round(y,1)<=1-(1e-3))if(flag[x*(1e+3),y*(1e+3)-1]==0)paint(x,y-(1e-3))
+					if(round(x,1)>(1e-3) & round(y,1)>(1e-3) & round(x,1)<=1-(1e-3) & round(y,1)<=1-(1e-3))if(flag[x*(1e+3)-1,y*(1e+3)]==0)paint(x-(1e-3),y)
+				}
 			}
 		}
-		x<-(px-p1[1])/(p2[1]-p1[1])
-		y<-(py-p1[2])/(p2[2]-p1[2])
-		x<-round(x,1)
-		y<-round(y,1)
-		if(!(x<0 | y<0 | x>1 | y>1) & record[x*(1e+3),y*(1e+3)]==record[px*(1e+3),py*(1e+3)] & flag[x*(1e+3),y*(1e+3)]==0)paint(x,y)
+		px<-(px-p1[1])/(p2[1]-p1[1])
+		py<-(py-p1[2])/(p2[2]-p1[2])
+		px<-round(px,1)
+		py<-round(py,1)
+		x<-px
+		y<-py
+		##if(!(x<0 | y<0 | x>1 | y>1) & record[x*(1e+3),y*(1e+3)]==record[px*(1e+3),py*(1e+3)] & flag[x*(1e+3),y*(1e+3)]==0){paint(x,y)}
 		return(NULL)
 	}
 	col<-function(K){
@@ -80,6 +115,8 @@ draw<-function(){
 		if(K=='w'){pen<<-2}
 		if(K=='a'){pen<<-3}
 		if(K=='l'){pen<<-4}
+		if(K=='c'){pen<<-5}
+		if(K=='t'){pen<<-6}
 		if(K%in%as.character(1:9)){cex<<-as.numeric(K)}
 		points(0,0,col='white')
 	}
