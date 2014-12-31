@@ -1,0 +1,42 @@
+draw<-function(){
+	x11()
+	plot(c(0,0),xlim=c(0,1),ylim=c(0,1),col='white',main="please click c(0,0) first then c(1,1) then the points")
+	data<-data.frame(x=0,y=0)
+	new<-F
+	p1<-c(0.1475410,0.1743666)
+	p2<-c(0.9090909,0.8569300)
+	color<<-'black'
+	pen<<-1
+	cex<<-5
+	add<-function(a,px,py){
+		point<-function(x,y){
+			temp<-matrix(c(runif(30)),ncol=3)
+			temp[,1]<-sin(temp[,1]*2*pi)*0.02*temp[,2]+px-0.01
+			temp[,2]<-sin(temp[,3]*2*pi)*0.02*temp[,2]+py-0.01
+			points(temp,pch=16,cex=0.8*cex/10,col=color)
+		}
+			px<-(px-p1[1])/(p2[1]-p1[1])
+			py<-(py-p1[2])/(p2[2]-p1[2])
+			if(px<1 & px>0 & py<1 & py>0){
+				print(color)
+				if(pen==1)points(px,py,pch=16,col=color,cex=cex/10)
+				if(pen==2)point(px,py)
+			}
+		return(NULL)
+	}
+	col<-function(K){
+		K<-tolower(K)
+		if(K=='r'){color<<-'red'}
+		if(K=='b'){color<<-'black'}
+		if(K=='g'){color<<-'green'}
+		if(K=='p'){color<<-'pink'}
+		if(K=='u'){color<<-'blue'}
+		if(K=='y'){color<<-'yellow'}
+		if(K=='o'){color<<-'organe'}
+		if(K=='q'){pen<<-1}
+		if(K=='w'){pen<<-2}
+		if(K%in%as.character(1:9)){cex<<-as.numeric(K)}
+		points(0,0,col='white')
+	}
+	getGraphicsEvent(prompt="create.reg",onMouseMove=add,onKeybd=col)
+}
