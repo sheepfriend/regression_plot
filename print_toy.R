@@ -1,3 +1,4 @@
+library(colorspace)
 draw<-function(){
 	x11()
 	plot(c(0,0),xlim=c(0,1),ylim=c(0,1),col='white',main="the weather is fine",xlab="q-pen  w-brush  r-line  t-circle  y-rect  u-eraser (filling not support)",ylab='color')
