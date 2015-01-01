@@ -1,6 +1,6 @@
 draw<-function(){
 	x11()
-	plot(c(0,0),xlim=c(0,1),ylim=c(0,1),col='white',main="the weather is fine")
+	plot(c(0,0),xlim=c(0,1),ylim=c(0,1),col='white',main="the weather is fine",xlab="q-pen  w-brush  r-line  t-circle  y-rect  u-eraser",ylab='color (gradation not support)')
 	data<-data.frame(x=0,y=0)
 	new<-F
 	p1<-c(0.1475410,0.1743666)
@@ -130,3 +130,4 @@ draw<-function(){
 	}
 	getGraphicsEvent(prompt="create.reg",onMouseMove=add,onMouseDown=add,onKeybd=col)
 }
+draw()
