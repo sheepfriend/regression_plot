@@ -5,7 +5,7 @@ draw<-function(){
 	new<-F
 	p1<-c(0.1475410,0.1743666)
 	p2<-c(0.9090909,0.8569300)
-	color<-c(1,1)
+	color<-c(1,50)
 	pre.col<-color
 	pen<-1
 	cex<-5
@@ -90,7 +90,7 @@ draw<-function(){
 		if(px<1 & px>-0.05 & py<1 & py>0){
 			if(px<0.13){choose.col(px,py)}
 			else{
-				if(pen==1)points(px,py,pch=16,col=col.vector[color[1]],cex=cex/10)
+				if(pen==1)points(px,py,pch=16,col=change.col(),cex=cex/10)
 				if(pen==2)point(px,py)
 				if(pen==3)painting(a,px,py)
 				if(pen==4)line(px,py)
