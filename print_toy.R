@@ -22,23 +22,27 @@ draw<-function(){
 	points(rep(0.05,tag),1:tag/tag/1.2,col=col.vector,pch=15)
 	points(c(0.07,0.02),c(pre.col[1]/tag,pre.col[2]/100)/1.2,pch=18,cex=1.2,col='white')
 	points(c(0.07,0.02),c(color[1]/tag,color[2]/100)/1.2,pch=18,cex=1.2,col='grey20')
-	points(0.028,0.94,pch=15,col=col.vector[color[1]],cex=4.5)
+	points(0.05,0.94,pch=15,col=col.vector[color[1]],cex=3)
+	points(0,0.94,pch=15,col='black',cex=3)
 	abline(v=0.1)
 	add1<-function(a,px,py){
 		change.col<-function(){
-			col<-mixcolor(color[2]/100,hex2RGB(col.vector[color[1]]),RGB(1,1,1))
+			if(color[2]/100>=0.5 & color[1]>=0){col<-mixcolor((color[2]/100-0.5)*2,hex2RGB(col.vector[color[1]]),RGB(1,1,1))}
+			else if(color[1]>=0){col<-mixcolor((0.5-color[2]/100)*2,hex2RGB(col.vector[color[1]]),RGB(0,0,0))}
+			else if(color[1]==-1){col<-mixcolor(color[2]/100,RGB(0,0,0),RGB(1,1,1))}
 			col<-col@coords
 			return(rgb(col[1],col[2],col[3]))
 		}
 		show.col<-function(){
 			points(c(0.07,0.02),c(pre.col[1]/tag,pre.col[2]/100)/1.2,pch=18,cex=1.2,col='white')
 			points(c(0.07,0.02),c(color[1]/tag,color[2]/100)/1.2,pch=18,cex=1.2,col='grey20')
-			points(0.028,0.94,pch=15,col=change.col(),cex=4.5)
+			points(0.05,0.94,pch=15,col=change.col(),cex=3)
 			pre.col<<-color
 		}
 		choose.col<-function(x,y){
 			if(abs(x)<0.01 & y>0 & y<1/1.2){color[2]<<-round(y*120)}
 			else if(abs(x-0.05)<0.01 & y>0 & y<1/1.2){color[1]<<-round(y*1.2*100)}
+			else if(abs(x)<0.03 & y>1/1.2){color[1]<<--1}
 			show.col()
 		}
 		if(pen!=4){lin<<-F}
@@ -99,19 +103,22 @@ draw<-function(){
 	}
 	add2<-function(a,px,py){
 		change.col<-function(){
-			col<-mixcolor(color[2]/100,hex2RGB(col.vector[color[1]]),RGB(1,1,1))
+			if(color[2]/100>=0.5 & color[1]>=0){col<-mixcolor((color[2]/100-0.5)*2,hex2RGB(col.vector[color[1]]),RGB(1,1,1))}
+			else if(color[1]>=0){col<-mixcolor((0.5-color[2]/100)*2,hex2RGB(col.vector[color[1]]),RGB(0,0,0))}
+			else if(color[1]==-1){col<-mixcolor(color[2]/100,RGB(0,0,0),RGB(1,1,1))}
 			col<-col@coords
 			return(rgb(col[1],col[2],col[3]))
 		}
 		show.col<-function(){
 			points(c(0.07,0.02),c(pre.col[1]/tag,pre.col[2]/100)/1.2,pch=18,cex=1.2,col='white')
 			points(c(0.07,0.02),c(color[1]/tag,color[2]/100)/1.2,pch=18,cex=1.2,col='grey20')
-			points(0.028,0.94,pch=15,col=change.col(),cex=4.5)
+			points(0.05,0.94,pch=15,col=change.col(),cex=3)
 			pre.col<<-color
 		}
 		choose.col<-function(x,y){
 			if(abs(x)<0.01 & y>0 & y<1/1.2){color[2]<<-round(y*120)}
 			else if(abs(x-0.05)<0.01 & y>0 & y<1/1.2){color[1]<<-round(y*1.2*100)}
+			else if(abs(x)<0.03 & y>1/1.2){color[1]<<--1}
 			show.col()
 		}
 		if(pen!=4 & pen!=1){lin<<-F}
