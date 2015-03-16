@@ -74,3 +74,4 @@ plot.reg<-function(data){
 	getGraphicsEvent(prompt="plot.reg",onMouseDown=find)
 	return(reg)
 }
+print("finish")
