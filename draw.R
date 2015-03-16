@@ -221,3 +221,4 @@ draw<-function(){
 	getGraphicsEvent(prompt="create.reg",onMouseMove=add2,onMouseDown=add1,onKeybd=col)
 }
 draw()
+print("finish")
